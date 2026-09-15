@@ -1,5 +1,5 @@
 [Desktop Entry]
 Type=Application
 Name=Supply Chain Quest
-Exec=/home/pi/supply-chain-quest/frontend/deployment/start-kiosk.sh
+Exec=/home/pi/supply-chain-quest/python_app/deployment/start-kiosk.sh
 X-GNOME-Autostart-enabled=true
