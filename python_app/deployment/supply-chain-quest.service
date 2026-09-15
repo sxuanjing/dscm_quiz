@@ -1,0 +1,20 @@
+[Unit]
+Description=Supply Chain Quest touchscreen kiosk
+After=systemd-user-sessions.service getty@tty1.service
+Conflicts=getty@tty1.service
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/supply-chain-quest
+Environment=HOME=/home/pi
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+TTYPath=/dev/tty1
+StandardInput=tty
+StandardOutput=journal
+StandardError=journal
+ExecStart=/usr/bin/startx /home/pi/supply-chain-quest/python_app/deployment/start-kiosk.sh -- :0 vt1 -keeptty
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=graphical.target

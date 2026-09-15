@@ -13,4 +13,11 @@ if ! python3 -c 'import tkinter' >/dev/null 2>&1; then
     exit 1
 fi
 
+if [ -z "${DISPLAY:-}" ]; then
+    echo "No graphical display is available (DISPLAY is not set)." >&2
+    echo "Use Raspberry Pi OS with Desktop and start this from its graphical session." >&2
+    echo "A headless SSH terminal cannot run the Tkinter touchscreen GUI." >&2
+    exit 1
+fi
+
 exec python3 "$APP_DIR/app.py" --fullscreen
