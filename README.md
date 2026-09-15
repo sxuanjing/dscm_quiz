@@ -1,43 +1,23 @@
 # Supply Chain Quest
 
-Supply Chain Quest is an offline two-choice quiz for visitors at a supply-chain open house. It runs as a lightweight Python Tkinter GUI on a Raspberry Pi 4 connected to a 3.5-inch touchscreen.
+An offline two-choice supply-chain quiz for a Waveshare 3.5-inch RPi LCD (B) Rev2.0. The project uses Python and Tkinter without a web server, Node.js, Chromium, or third-party runtime packages.
 
-The supported application is in [python_app](python_app). It uses Python's standard library and keeps all game state in memory. No web server, Chromium, Node.js, npm, backend, database, network connection, or visitor data collection is required.
+## Phase 1: Test the LCD
 
-## Run locally
-
-Requires Python 3 and Tkinter.
+Install Python and Tkinter on the development computer or Raspberry Pi, then run:
 
 ```bash
-python3 -m unittest discover -s python_app/tests -v
-python3 python_app/app.py
+python3 hello_world.py
 ```
 
-Use `Esc` to leave fullscreen mode during maintenance. The game contains 20 questions and selects 10 questions for each session.
-
-## Raspberry Pi 4
-
-On Raspberry Pi OS with the desktop:
+For the Waveshare LCD, first confirm its driver creates `/dev/fb0`, disconnect HDMI, start X on the local Pi console, and run:
 
 ```bash
-sudo apt update
-sudo apt install -y git python3 python3-tk unclutter
-cd /home/pi
-git clone https://github.com/YOUR-GITHUB-USERNAME/YOUR-REPOSITORY.git supply-chain-quest
-cd /home/pi/supply-chain-quest
-python3 -m unittest discover -s python_app/tests -v
-chmod +x python_app/deployment/start-kiosk.sh
-python_app/deployment/start-kiosk.sh
+startx /usr/bin/python3 /home/pi/supply-chain-quest/hello_world.py -- --fullscreen
 ```
 
-Configure the LCD in landscape orientation and check the game at 480 x 320. Press `Esc`, then `Alt+F4`, to exit during maintenance.
+The LCD should show `Hello World` at 480 x 320. Press `Esc` to close the test. Do not configure the quiz or systemd service until this test works on the LCD.
 
-Enable automatic startup:
+## Phase 2: Build the game
 
-```bash
-mkdir -p /home/pi/.config/autostart
-cp python_app/deployment/supply-chain-quest.desktop /home/pi/.config/autostart/
-sudo reboot
-```
-
-The complete deployment guide is in [python_app/README.md](python_app/README.md).
+The quiz implementation will live in [python_app](python_app), with pure game logic tests and a direct Raspberry Pi kiosk launcher. The full deployment guide is in [python_app/README.md](python_app/README.md).

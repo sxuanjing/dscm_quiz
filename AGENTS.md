@@ -1,57 +1,58 @@
 # Supply Chain Open House Game
 
-## Business Requirements
+## Current Phase
 
-- Build an interactive educational game for visitors at an open house.
-- Run it on a Raspberry Pi connected to a 3.5-inch LCD touchscreen.
-- Launch automatically in fullscreen mode when Raspberry Pi OS starts.
-- Explain supply-chain management with simple, familiar examples.
-- Present one question at a time with exactly two large answer choices.
-- Allow one answer, show immediate correct or incorrect feedback, and explain the answer briefly.
-- Show progress, score, a positive completion message, and a prominent restart button.
-- Return from the completion screen to the welcome screen after a short inactivity period.
-- Do not add accounts, administration, leaderboards, data collection, persistence, or online services.
+Validate the Waveshare 3.5inch RPi LCD (B) Rev2.0 display path with a minimal Tkinter Hello World screen before rebuilding the quiz.
 
-## Technical Requirements
+## Hardware Requirements
 
-- Implement the supported game as a lightweight Python 3 GUI using Tkinter.
-- Keep the application under `python_app`.
-- Use Python's standard library wherever possible; do not require Node.js, npm, Chromium, a web server, or third-party Python packages.
-- Keep all questions and visual content local so the game runs offline after installation.
-- Keep game state in memory and do not record visitor information.
-- Target a 480 x 320 landscape display without inaccessible controls or horizontal overflow.
-- Use large touch targets, readable text, strong contrast, and symbols plus text for feedback.
-- Prevent accidental window resizing and unsuitable desktop interactions where practical.
+- Raspberry Pi 4.
+- Waveshare 3.5inch RPi LCD (B) Rev2.0.
+- 480 x 320 landscape display.
+- Resistive touchscreen connected through the LCD GPIO header.
 
-## Content Requirements
+## Phase 1: Display Bring-Up
 
-- Include at least 10 questions; the current bank contains 20.
-- Each question has a unique ID, prompt, exactly two choices, one valid correct answer, explanation, category, and local visual key.
-- Mix word questions, scenarios, roles, transport, warehouse, sustainability, and technology topics.
-- Keep the correct answer position varied.
+- Use Python 3 and Tkinter only for the first test.
+- Run `hello_world.py` manually through a real X display on the local Raspberry Pi console.
+- Confirm the Waveshare driver is installed and `/dev/fb0` exists.
+- Disconnect HDMI while testing so X output cannot be mistaken for LCD output.
+- Confirm the LCD displays `Hello World` at 480 x 320.
+- Confirm touchscreen input or a local mouse can interact with the window.
+- Do not add the quiz or automatic service until the manual display test passes.
+- Do not use a fake `$DISPLAY`; Tkinter requires a real X display server.
 
-## Raspberry Pi Deployment
+## Phase 2: Quiz Requirements
 
-- Document Raspberry Pi OS setup and the `python3-tk` package.
-- Provide a direct Python startup script and desktop autostart entry.
-- Start the game in fullscreen mode without a browser or local web server.
-- Document landscape orientation, screen blanking, optional cursor hiding, and maintenance exit.
-- Ensure the app recovers cleanly after a restart and needs no network at runtime.
+- Build an offline educational supply-chain quiz.
+- Show one question at a time with exactly two large answer choices.
+- Allow only one answer per question and show immediate correct/incorrect feedback.
+- Include a short explanation, progress, score, completion message, restart button, and inactivity reset.
+- Keep all questions and visuals local; do not add accounts, persistence, networking, or data collection.
+- Keep state in memory and use Python's standard library wherever possible.
 
-## Testing Requirements
+## Phase 3: Kiosk Deployment
 
-- Test question validation and exactly two choices.
-- Test correct and incorrect scoring.
-- Test answer locking and repeated taps.
-- Test progression, final completion, restart, and inactivity reset behavior.
-- Run the complete visitor flow at the 480 x 320 target size.
-- Verify offline operation and Raspberry Pi autostart on the target hardware.
+- Use Raspberry Pi OS Lite plus the Waveshare driver and minimal Xorg, or Raspberry Pi OS with Desktop if required by the LCD driver.
+- Start the GUI directly without Node.js, npm, Chromium, or a web server.
+- Add systemd startup only after manual X/Tkinter LCD testing passes.
+- Document LCD orientation, framebuffer verification, touch calibration, maintenance exit, and service logs.
+- Keep the startup path compatible with `/home/pi/supply-chain-quest` and user `pi` unless deployment documentation is updated together.
+
+## Testing
+
+- Compile every Python module.
+- Test pure game state transitions without a display.
+- Test the complete visitor flow at 480 x 320.
+- Test repeated taps, scoring, progression, completion, restart, and timeout reset.
+- Test the Hello World screen on the physical LCD before kiosk automation.
+- Test offline operation and automatic startup after reboot.
 
 ## Coding Standards
 
-1. Keep the solution simple and avoid unnecessary dependencies.
-2. Prefer clear components, pure game-state logic, and editable question data.
-3. Keep user-facing text concise and suitable for general visitors.
-4. Keep documentation focused on Python development and Raspberry Pi deployment.
-5. Do not use remote assets or services that prevent offline operation.
-6. Do not include emojis in the interface, source code, documentation, or commit messages.
+1. Keep the implementation simple and focused on the open-house visitor flow.
+2. Prefer pure, testable game logic separated from Tkinter rendering.
+3. Use large touch targets, strong contrast, and text plus symbols for feedback.
+4. Keep user-facing copy short and suitable for general visitors.
+5. Do not add remote assets, network services, persistence, or unnecessary dependencies.
+6. Do not include emojis in the interface, source code, or documentation.
