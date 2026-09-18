@@ -1,6 +1,6 @@
 # Supply Chain Quest
 
-A local touchscreen quiz for supply-chain open house visitors. The game uses Python and Tkinter only, keeps session state in memory, and is designed for a 480 x 320 Raspberry Pi display.
+A local touchscreen quiz for supply-chain open house visitors. The game uses Python and Tkinter only, keeps session state in memory, and is designed for an 800 x 480 Raspberry Pi display.
 
 ## Development
 
@@ -16,7 +16,7 @@ Use `Esc` to leave fullscreen mode during maintenance. The app does not use a ne
 
 ## Raspberry Pi 4
 
-The recommended lightweight setup is Raspberry Pi OS Lite with the LCD driver, Xorg, and a project checkout at `/home/pi/supply-chain-quest`. Tkinter cannot run from a headless SSH session by itself; the service below creates the X display during boot. Raspberry Pi OS with Desktop also works, but use only one startup method.
+The recommended setup is Raspberry Pi OS with Desktop and a project checkout at `/home/pi/supply-chain-quest`. Tkinter cannot run from a headless SSH session by itself. Use only one startup method below.
 
 ```bash
 sudo apt update
@@ -29,7 +29,7 @@ chmod +x python_app/deployment/start-kiosk.sh
 python_app/deployment/start-kiosk.sh
 ```
 
-The LCD driver must already be installed and configured as the active X display. If an HDMI monitor is connected, X may appear there instead of the LCD. For the first test, disconnect the HDMI monitor and confirm that the LCD driver is configured for `480x320` landscape orientation. Do not set a fake `DISPLAY` value: Tkinter needs a real X display server.
+If an HDMI monitor is connected, X may appear there instead of the touch display. For the first test, disconnect the HDMI monitor and confirm the touch display is configured for `800x480` landscape orientation. Do not set a fake `DISPLAY` value: Tkinter needs a real X display server.
 
 The game opens fullscreen. Press `Esc` when a keyboard is connected to leave fullscreen mode, then use `Alt+F4` to close the application.
 
@@ -63,7 +63,7 @@ sudo reboot
 
 The desktop entry launches the game directly with Python. No Node.js, npm, Chromium, web server, or internet connection is required after installation.
 
-For an open-house display, configure the LCD in landscape orientation, disable screen blanking and power saving, and optionally hide the cursor:
+For an open-house display, configure the touch display in landscape orientation, disable screen blanking and power saving, and optionally hide the cursor:
 
 ```bash
 unclutter -idle 3 -root &

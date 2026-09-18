@@ -1,20 +1,20 @@
-"""Minimal Tkinter display test for the Waveshare LCD."""
+"""Minimal Tkinter display test for the Raspberry Pi 7-inch Touch Display."""
 
 import argparse
 import tkinter as tk
 
 
-SCREEN_WIDTH = 480
-SCREEN_HEIGHT = 320
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 480
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Test the Waveshare LCD with Tkinter")
+    parser = argparse.ArgumentParser(description="Test the Raspberry Pi 7-inch Touch Display with Tkinter")
     parser.add_argument("--fullscreen", action="store_true", help="Fill the active display")
     args = parser.parse_args()
 
     root = tk.Tk()
-    root.title("Waveshare LCD Test")
+    root.title("Raspberry Pi Touch Display Test")
     root.geometry(f"{SCREEN_WIDTH}x{SCREEN_HEIGHT}")
     root.resizable(False, False)
     root.configure(bg="#032147")

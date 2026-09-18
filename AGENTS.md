@@ -2,22 +2,20 @@
 
 ## Current Phase
 
-Validate the Waveshare 3.5inch RPi LCD (B) Rev2.0 display path with a minimal Tkinter Hello World screen before rebuilding the quiz.
+Validate the official Raspberry Pi 7-inch Touch Display path with a minimal Tkinter Hello World screen before rebuilding the quiz.
 
 ## Hardware Requirements
 
 - Raspberry Pi 4.
-- Waveshare 3.5inch RPi LCD (B) Rev2.0.
-- 480 x 320 landscape display.
-- Resistive touchscreen connected through the LCD GPIO header.
+- Official Raspberry Pi 7-inch Touch Display (DSI, capacitive).
+- 800 x 480 landscape display.
 
 ## Phase 1: Display Bring-Up
 
 - Use Python 3 and Tkinter only for the first test.
 - Run `hello_world.py` manually through a real X display on the local Raspberry Pi console.
-- Confirm the Waveshare driver is installed and `/dev/fb0` exists.
-- Disconnect HDMI while testing so X output cannot be mistaken for LCD output.
-- Confirm the LCD displays `Hello World` at 480 x 320.
+- Disconnect HDMI while testing so X output cannot be mistaken for touch display output.
+- Confirm the touch display shows `Hello World` at 800 x 480.
 - Confirm touchscreen input or a local mouse can interact with the window.
 - Do not add the quiz or automatic service until the manual display test passes.
 - Do not use a fake `$DISPLAY`; Tkinter requires a real X display server.
@@ -33,19 +31,19 @@ Validate the Waveshare 3.5inch RPi LCD (B) Rev2.0 display path with a minimal Tk
 
 ## Phase 3: Kiosk Deployment
 
-- Use Raspberry Pi OS Lite plus the Waveshare driver and minimal Xorg, or Raspberry Pi OS with Desktop if required by the LCD driver.
+- Use Raspberry Pi OS with Desktop.
 - Start the GUI directly without Node.js, npm, Chromium, or a web server.
-- Add systemd startup only after manual X/Tkinter LCD testing passes.
-- Document LCD orientation, framebuffer verification, touch calibration, maintenance exit, and service logs.
+- Add systemd startup only after manual X/Tkinter touch display testing passes.
+- Document display orientation, touch calibration, maintenance exit, and service logs.
 - Keep the startup path compatible with `/home/pi/supply-chain-quest` and user `pi` unless deployment documentation is updated together.
 
 ## Testing
 
 - Compile every Python module.
 - Test pure game state transitions without a display.
-- Test the complete visitor flow at 480 x 320.
+- Test the complete visitor flow at 800 x 480.
 - Test repeated taps, scoring, progression, completion, restart, and timeout reset.
-- Test the Hello World screen on the physical LCD before kiosk automation.
+- Test the Hello World screen on the physical touch display before kiosk automation.
 - Test offline operation and automatic startup after reboot.
 
 ## Coding Standards

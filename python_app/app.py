@@ -71,8 +71,8 @@ class SupplyChainQuestApp:
         self.reset_job: str | None = None
         self.fullscreen = fullscreen
         self.root.title("Supply Chain Quest")
-        self.root.geometry("480x320")
-        self.root.minsize(480, 320)
+        self.root.geometry("800x480")
+        self.root.minsize(800, 480)
         self.root.configure(bg=COLORS["background"])
         self.root.protocol("WM_DELETE_WINDOW", self.root.destroy)
         self.root.bind("<Escape>", self.exit_fullscreen)
@@ -165,11 +165,11 @@ class SupplyChainQuestApp:
         content.grid(row=1, column=0, sticky="nsew")
         content.columnconfigure(0, weight=1)
         content.rowconfigure(0, weight=1)
-        score = tk.Canvas(content, width=100, height=100, bg="#f4eefa", highlightthickness=0)
+        score = tk.Canvas(content, width=140, height=140, bg="#f4eefa", highlightthickness=0)
         score.grid(row=0, column=0, pady=(0, 2))
-        score.create_oval(7, 7, 93, 93, fill=COLORS["white"], outline=COLORS["yellow"], width=7)
-        score.create_text(50, 43, text=str(self.state.score), fill=COLORS["navy"], font=("Trebuchet MS", 30, "bold"))
-        score.create_text(50, 70, text=f"of {QUESTIONS_PER_GAME}", fill=COLORS["muted"], font=("Trebuchet MS", 9))
+        score.create_oval(10, 10, 130, 130, fill=COLORS["white"], outline=COLORS["yellow"], width=7)
+        score.create_text(70, 60, text=str(self.state.score), fill=COLORS["navy"], font=("Trebuchet MS", 30, "bold"))
+        score.create_text(70, 98, text=f"of {QUESTIONS_PER_GAME}", fill=COLORS["muted"], font=("Trebuchet MS", 9))
         self.label(content, "Nice work!", 27, "purple", True).grid(row=1, column=0)
         self.label(content, "You kept it moving.", 12, "muted").grid(row=2, column=0, pady=(4, 10))
         self.button(content, "PLAY AGAIN   ->", self.reset, COLORS["purple"], width=18).grid(row=3, column=0)
@@ -194,7 +194,7 @@ class SupplyChainQuestApp:
         panel.columnconfigure(0, weight=1)
         self.draw_visual(panel, question.visual, category_color, category_soft)
         self.label(panel, question.category.upper(), 8, category_color, True).grid(row=1, column=0, sticky="w", pady=(4, 2))
-        self.label(panel, question.prompt, 18, "navy", True, justify="left", wraplength=430).grid(row=2, column=0, sticky="w", pady=(0, 7))
+        self.label(panel, question.prompt, 18, "navy", True, justify="left", wraplength=700).grid(row=2, column=0, sticky="w", pady=(0, 7))
         choices = tk.Frame(panel, bg=COLORS["white"])
         choices.grid(row=3, column=0, sticky="ew")
         choices.columnconfigure(0, weight=1)
@@ -210,9 +210,9 @@ class SupplyChainQuestApp:
         canvas.create_rectangle(0, 0, width, event.height, fill=color, outline=color)
 
     def draw_visual(self, parent: tk.Frame, visual: str, color: str, soft: str) -> None:
-        tile = tk.Canvas(parent, width=52, height=30, bg=soft, highlightthickness=0)
+        tile = tk.Canvas(parent, width=70, height=40, bg=soft, highlightthickness=0)
         tile.grid(row=0, column=0, sticky="w")
-        tile.create_text(26, 15, text=VISUAL_SYMBOLS.get(visual, "SCM"), fill=color, font=("Trebuchet MS", 9, "bold"))
+        tile.create_text(35, 20, text=VISUAL_SYMBOLS.get(visual, "SCM"), fill=color, font=("Trebuchet MS", 9, "bold"))
 
     def render_choice(self, parent: tk.Frame, question: object, choice_id: str, text: str, index: int, category_color: str) -> None:
         is_feedback = self.state.phase == "feedback"
@@ -259,7 +259,7 @@ class SupplyChainQuestApp:
         feedback.columnconfigure(0, weight=1)
         headline = "YES!" if correct else "TRY AGAIN"
         self.label(feedback, headline, 13, color, True, bg=background).grid(row=0, column=0, sticky="w")
-        self.label(feedback, question.explanation, 8, "navy", bg=background, wraplength=320, justify="left").grid(row=1, column=0, sticky="w")
+        self.label(feedback, question.explanation, 8, "navy", bg=background, wraplength=550, justify="left").grid(row=1, column=0, sticky="w")
         next_label = "SCORE   ->" if self.state.question_index == QUESTIONS_PER_GAME - 1 else "NEXT   ->"
         self.button(feedback, next_label, self.next, COLORS["purple"], width=10, font=("Trebuchet MS", 9, "bold"), padx=6, pady=4).grid(row=0, column=1, rowspan=2, padx=(7, 0))
 
