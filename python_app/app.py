@@ -15,6 +15,8 @@ except ImportError:
 COLORS = {
     "blue": "#209dd7",
     "blue_dark": "#0877a8",
+    "orange": "#f0783c",
+    "teal": "#16a6a0",
     "purple": "#753991",
     "purple_dark": "#52256a",
     "yellow": "#ecad0a",
@@ -142,10 +144,9 @@ class SupplyChainQuestApp:
         frame = self.base_frame("#f5f8fc")
         frame.columnconfigure(0, weight=1)
         frame.rowconfigure(1, weight=1)
-        badge = tk.Canvas(frame, width=44, height=44, bg="#f5f8fc", highlightthickness=0)
-        badge.grid(row=0, column=0, sticky="w", pady=(2, 2))
-        badge.create_rectangle(3, 3, 40, 40, fill=COLORS["blue"], outline=COLORS["blue"], width=0)
-        badge.create_text(22, 21, text="SC", fill=COLORS["white"], font=("Trebuchet MS", 13, "bold"))
+        hero = tk.Canvas(frame, width=760, height=130, bg="#f5f8fc", highlightthickness=0)
+        hero.grid(row=0, column=0, sticky="ew", pady=(0, 4))
+        self.draw_welcome_art(hero)
         content = tk.Frame(frame, bg="#f5f8fc")
         content.grid(row=1, column=0, sticky="nsew")
         content.columnconfigure(0, weight=1)
@@ -155,6 +156,26 @@ class SupplyChainQuestApp:
         self.label(content, "Move it. Make it. Deliver it.", 12, "muted").grid(row=2, column=0, sticky="w", pady=(5, 8))
         self.button(content, "PLAY   ->", self.start, COLORS["blue"], width=16).grid(row=3, column=0, sticky="w")
         self.label(content, "10 questions  |  Tap to start", 8, "muted").grid(row=4, column=0, sticky="w", pady=(6, 0))
+
+    def draw_welcome_art(self, canvas: tk.Canvas) -> None:
+        canvas.create_oval(650, 8, 730, 88, fill="#ffe08a", outline="")
+        canvas.create_line(20, 106, 730, 106, fill="#b9d7df", width=5)
+        canvas.create_line(20, 106, 730, 106, fill=COLORS["white"], width=2, dash=(12, 10))
+        canvas.create_rectangle(70, 60, 138, 105, fill=COLORS["orange"], outline=COLORS["orange"])
+        canvas.create_rectangle(82, 48, 126, 60, fill="#ffbd55", outline="#ffbd55")
+        canvas.create_rectangle(88, 70, 105, 86, fill="#fff4c2", outline="")
+        canvas.create_rectangle(110, 70, 127, 86, fill="#fff4c2", outline="")
+        canvas.create_oval(78, 94, 96, 112, fill=COLORS["navy"], outline="")
+        canvas.create_oval(116, 94, 134, 112, fill=COLORS["navy"], outline="")
+        canvas.create_line(160, 78, 570, 78, fill=COLORS["blue"], width=4, arrow=tk.LAST)
+        canvas.create_oval(250, 59, 289, 98, fill=COLORS["green"], outline="")
+        canvas.create_rectangle(265, 67, 274, 91, fill=COLORS["white"], outline="")
+        canvas.create_rectangle(260, 74, 279, 83, fill=COLORS["white"], outline="")
+        canvas.create_rectangle(440, 48, 500, 98, fill=COLORS["purple"], outline=COLORS["purple"])
+        canvas.create_rectangle(450, 38, 490, 48, fill="#a66ac0", outline="#a66ac0")
+        canvas.create_rectangle(451, 60, 467, 76, fill="#f8d86c", outline="")
+        canvas.create_rectangle(473, 60, 489, 76, fill="#f8d86c", outline="")
+        canvas.create_text(610, 104, text="PLAN  •  MOVE  •  DELIVER", fill=COLORS["purple"], font=("Trebuchet MS", 10, "bold"))
 
     def render_complete(self) -> None:
         frame = self.base_frame("#f4eefa")
@@ -174,6 +195,14 @@ class SupplyChainQuestApp:
         self.label(content, "You kept it moving.", 12, "muted").grid(row=2, column=0, pady=(4, 10))
         self.button(content, "PLAY AGAIN   ->", self.reset, COLORS["purple"], width=18).grid(row=3, column=0)
         self.label(content, "Resetting soon", 9, "muted").grid(row=4, column=0, pady=(7, 0))
+        celebration = tk.Canvas(frame, width=300, height=34, bg="#f4eefa", highlightthickness=0)
+        celebration.grid(row=2, column=0, pady=(2, 0))
+        self.draw_celebration(celebration)
+
+    def draw_celebration(self, canvas: tk.Canvas) -> None:
+        for x, color in ((35, COLORS["blue"]), (85, COLORS["orange"]), (135, COLORS["green"]), (185, COLORS["yellow"]), (235, COLORS["purple"])):
+            canvas.create_line(x, 28, x + 8, 8, fill=color, width=3)
+            canvas.create_oval(x + 4, 4, x + 12, 12, fill=color, outline="")
 
     def render_question(self) -> None:
         question = current_question(self.state)
@@ -210,9 +239,41 @@ class SupplyChainQuestApp:
         canvas.create_rectangle(0, 0, width, event.height, fill=color, outline=color)
 
     def draw_visual(self, parent: tk.Frame, visual: str, color: str, soft: str) -> None:
-        tile = tk.Canvas(parent, width=70, height=40, bg=soft, highlightthickness=0)
+        tile = tk.Canvas(parent, width=120, height=64, bg=soft, highlightthickness=0)
         tile.grid(row=0, column=0, sticky="w")
-        tile.create_text(35, 20, text=VISUAL_SYMBOLS.get(visual, "SCM"), fill=color, font=("Trebuchet MS", 9, "bold"))
+        tile.create_rectangle(2, 2, 118, 62, outline=color, width=2)
+        if visual in {"FLOW", "SUPPLY", "USE", "MOVE", "FINAL"}:
+            tile.create_oval(12, 22, 38, 48, fill=COLORS["blue"], outline="")
+            tile.create_line(42, 35, 78, 35, fill=color, width=4, arrow=tk.LAST)
+            tile.create_rectangle(84, 20, 108, 50, fill=COLORS["orange"], outline="")
+            tile.create_line(89, 28, 103, 28, fill="#fff4c2", width=3)
+            tile.create_line(89, 36, 103, 36, fill="#fff4c2", width=3)
+        elif visual in {"STORE", "MAKE", "SAFE", "COUNT", "CHECK"}:
+            tile.create_polygon(18, 29, 42, 12, 66, 29, fill=COLORS["purple"], outline="")
+            tile.create_rectangle(25, 29, 59, 51, fill=COLORS["orange"], outline="")
+            tile.create_rectangle(37, 35, 47, 51, fill="#fff4c2", outline="")
+            tile.create_rectangle(76, 24, 103, 51, fill=COLORS["yellow"], outline="")
+            tile.create_line(82, 32, 97, 32, fill=COLORS["navy"], width=2)
+            tile.create_line(82, 40, 97, 40, fill=COLORS["navy"], width=2)
+        elif visual in {"SHIP", "TRUCK", "AIR"}:
+            tile.create_rectangle(17, 27, 78, 47, fill=COLORS["blue"], outline="")
+            tile.create_polygon(78, 27, 97, 27, 108, 47, 78, 47, fill=COLORS["orange"], outline="")
+            tile.create_rectangle(84, 31, 96, 39, fill="#dff7ff", outline="")
+            tile.create_oval(28, 41, 44, 57, fill=COLORS["navy"], outline="")
+            tile.create_oval(77, 41, 93, 57, fill=COLORS["navy"], outline="")
+        elif visual in {"GREEN", "REUSE", "FIX"}:
+            tile.create_line(59, 52, 59, 24, fill=COLORS["green_dark"], width=4)
+            tile.create_oval(33, 17, 62, 40, fill=COLORS["green"], outline="")
+            tile.create_oval(58, 17, 88, 40, fill=COLORS["teal"], outline="")
+            tile.create_rectangle(91, 28, 106, 47, fill=COLORS["yellow"], outline="")
+            tile.create_line(94, 34, 103, 34, fill=COLORS["navy"], width=2)
+            tile.create_line(94, 40, 103, 40, fill=COLORS["navy"], width=2)
+        else:
+            tile.create_rectangle(18, 17, 48, 51, fill=COLORS["purple"], outline="")
+            for x in (24, 30, 36, 42):
+                tile.create_line(x, 22, x, 46, fill=COLORS["white"], width=2)
+            tile.create_oval(73, 18, 103, 48, fill=COLORS["blue"], outline="")
+            tile.create_rectangle(82, 45, 94, 53, fill=COLORS["blue"], outline="")
 
     def render_choice(self, parent: tk.Frame, question: object, choice_id: str, text: str, index: int, category_color: str) -> None:
         is_feedback = self.state.phase == "feedback"
